@@ -47,6 +47,9 @@
   <ItemGroup>
      <Compile Include="Assets\Ball.cs" />
      <Compile Include="Assets\Bumper.cs" />
+     <Compile Include="Assets\DropdownScript.cs" />
+     <Compile Include="Assets\ResetBtnScript.cs" />
+     <Compile Include="Assets\UI.cs" />
      <Compile Include="Assets\Vuforia\Scripts\BackgroundPlaneBehaviour.cs" />
      <Compile Include="Assets\Vuforia\Scripts\CloudRecoBehaviour.cs" />
      <Compile Include="Assets\Vuforia\Scripts\CylinderTargetBehaviour.cs" />

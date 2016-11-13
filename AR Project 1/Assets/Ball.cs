@@ -6,6 +6,7 @@ public class Ball : MonoBehaviour {
 	public Rigidbody rb;
 	public bool started;
 	public Text countText;
+	public bool running;
 
 	private float sx;
 	private float sy;
@@ -15,11 +16,14 @@ public class Ball : MonoBehaviour {
 	private int redScore;
 	private int blueScore;
 
+	public AudioSource hit_sound;
+	public AudioSource score_sound;
+
 	// Use this for initialization
 	void Start () {
 		redScore = 0;
 		blueScore = 0;
-
+		running = false;
 	}
 
 	void Reset() {
@@ -29,10 +33,10 @@ public class Ball : MonoBehaviour {
 	}
 
 	void UpdateText() {
-		countText.text = "Blue " + blueScore.ToString() + " - " + redScore.ToString() + " Red";
+		countText.text = "Red " + redScore.ToString() + " - " + blueScore.ToString() + " Blue";
 	}
 
-	void GameReset() {
+	public void GameReset() {
 		startPos = transform.position;
 		startRot = transform.rotation;
 		sx = Random.Range (0, 2) == 0 ? -1 : 1;
@@ -40,32 +44,34 @@ public class Ball : MonoBehaviour {
 		rb.velocity = new Vector3 (Random.Range (1, 1.5f) * sx, Random.Range (1, 1.5f) * sy, 0);
 	}
 
+	public void GameFullReset() {
+		redScore = 0;
+		blueScore = 0;
+		UpdateText ();
+		Reset();
+		rb.velocity = new Vector3 (0, 0, 0);
+	}
+
 	void OnCollisionEnter(Collision col) {
 		if (col.gameObject.name == "RedWall") {
+			score_sound.Play ();
 			Debug.Log ("BLUE SCORED");
-			Reset();
+			Reset ();
 			blueScore++;
 			UpdateText ();
 		} else if (col.gameObject.name == "BlueWall") {
+			score_sound.Play ();
 			Debug.Log ("RED SCORED");
-			Reset();
+			Reset ();
 			redScore++;
 			UpdateText ();
+		} else if (col.gameObject.name != "Invis Wall UP" && col.gameObject.name != "Invis Wall Down") {
+			hit_sound.Play ();
 		}
 	}
 
 	// Update is called once per frame
 	void Update () {
-		if (started) {
-			Vector3 pos = transform.position;
-			pos.y = 0.2f;
-			transform.position = pos;
-		}
-			
-		if (!started && Input.GetKeyDown ("space")) {
-			GameReset ();
-			started = false;
-		}
 
 	}
 }
