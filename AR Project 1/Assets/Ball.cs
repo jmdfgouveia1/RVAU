@@ -6,6 +6,7 @@ public class Ball : MonoBehaviour {
 	public Rigidbody rb;
 	public bool started;
 	public Text countText;
+	public Text resultText;
 	public bool running;
 
 	private float sx;
@@ -19,11 +20,14 @@ public class Ball : MonoBehaviour {
 	public AudioSource hit_sound;
 	public AudioSource score_sound;
 
+	private int maxScore;
+
 	// Use this for initialization
 	void Start () {
 		redScore = 0;
 		blueScore = 0;
 		running = false;
+		maxScore = 10;
 	}
 
 	void Reset() {
@@ -45,11 +49,24 @@ public class Ball : MonoBehaviour {
 	}
 
 	public void GameFullReset() {
+		resultText.text = "";
 		redScore = 0;
 		blueScore = 0;
 		UpdateText ();
 		Reset();
 		rb.velocity = new Vector3 (0, 0, 0);
+	}
+
+	public void GameEnd() {
+		Reset();
+		rb.velocity = new Vector3 (0, 0, 0);
+		if (blueScore >= maxScore) {
+			resultText.text = "BLUE WON";
+			resultText.color = new Color (0, 0, 255);
+		} else if (redScore >= maxScore) {
+			resultText.text = "RED WON";
+			resultText.color = new Color (255, 0, 0);
+		}
 	}
 
 	void OnCollisionEnter(Collision col) {
@@ -67,6 +84,10 @@ public class Ball : MonoBehaviour {
 			UpdateText ();
 		} else if (col.gameObject.name != "Invis Wall UP" && col.gameObject.name != "Invis Wall Down") {
 			hit_sound.Play ();
+		}
+
+		if (blueScore >= maxScore || redScore >= maxScore) {
+			GameEnd ();
 		}
 	}
 
