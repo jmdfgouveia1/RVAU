@@ -47,7 +47,6 @@
   <ItemGroup>
      <Compile Include="Assets\Ball.cs" />
      <Compile Include="Assets\Bumper.cs" />
-     <Compile Include="Assets\CameraAccess.cs" />
      <Compile Include="Assets\DropdownScript.cs" />
      <Compile Include="Assets\Exit.cs" />
      <Compile Include="Assets\ResetBtnScript.cs" />
